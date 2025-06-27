@@ -1,53 +1,60 @@
-#Restaurant Revenue Forecasting with SARIMAX and Power BI
+<h2>🍽️ Restaurant Revenue Forecasting with SARIMAX and Power BI</h2>
 
-📌 Project Overview
-This project predicts restaurant revenues using SARIMAX time series forecasting in Python and visualizes historical vs. forecasted revenues in Power BI for actionable business insights.
+<h3>📌 Project Overview</h3>
+<p>
+This project predicts <strong>restaurant revenues</strong> using <strong>SARIMAX time series forecasting in Python</strong> and visualizes <strong>historical vs. forecasted revenues</strong> in <strong>Power BI</strong> for actionable business insights.
+</p>
 
-🎯 Objective
-Predict monthly revenue 12 months ahead to support demand planning and budgeting for restaurants.
+<h3>🎯 Objective</h3>
+<p>
+Predict <strong>monthly revenue 12 months ahead</strong> to support <strong>restaurant demand planning and budgeting</strong>.
+</p>
 
-🛠️ Tools Used
-Python: Pandas, SARIMAX (statsmodels), US federal holidays
+<h3>🛠️ Tools Used</h3>
+<ul>
+<li><strong>Python:</strong> Pandas, SARIMAX (statsmodels), US federal holidays</li>
+<li><strong>Power BI:</strong> Interactive dashboard creation and trend visualization</li>
+</ul>
 
-Power BI: Interactive dashboard creation and trend visualization
+<h3>📂 Data</h3>
+<p>
+Historical <strong>monthly revenue data (1992 – April 2025)</strong>.
+</p>
 
-📂 Data
-Historical monthly revenue data (1992 – April 2025).
+<h3>🚀 Features</h3>
 
-🚀 Features
-1️⃣ Data Cleaning
-Removed non-numeric and summary rows (e.g., “TOTAL”).
+<h4>1️⃣ Data Cleaning</h4>
+<ul>
+<li>Removed non-numeric and summary rows (e.g., “TOTAL”).</li>
+<li>Cleaned (p), (r) flags from month columns.</li>
+<li>Converted columns to proper datetime index for modeling.</li>
+</ul>
 
-Cleaned (p), (r) flags from month columns.
+<h4>2️⃣ Feature Engineering</h4>
+<ul>
+<li>Added <strong>holiday flags</strong> using the US federal holiday calendar.</li>
+<li>Created <strong>month-over-month growth %</strong> for business tracking.</li>
+</ul>
 
-Converted columns to proper datetime index for modeling.
+<h4>3️⃣ Forecasting with SARIMAX</h4>
+<ul>
+<li>Implemented <strong>SARIMAX with exogenous variables (holiday flags)</strong> to capture seasonality.</li>
+<li>Extended forecasts up to <strong>May 2026</strong>.</li>
+<li>Evaluated performance using <strong>MAE</strong> and <strong>RMSE</strong>.</li>
+</ul>
 
-2️⃣ Feature Engineering
-Added holiday flags using the US federal holiday calendar.
+<h4>4️⃣ Visualization with Power BI</h4>
+<ul>
+<li>Combined <strong>historical and forecasted data</strong> for direct comparison.</li>
+<li>Displayed <strong>revenue trends, YoY growth, and forecast vs. actual</strong> using clear line and bar charts.</li>
+<li>Included <strong>KPI cards</strong> for forecast values and growth tracking.</li>
+</ul>
 
-Created month-over-month growth % for business tracking.
-
-3️⃣ Forecasting with SARIMAX
-Implemented SARIMAX with exogenous variables (holiday flags) for seasonality handling.
-
-Extended forecasts up to May 2026.
-
-Evaluated model performance using MAE and RMSE.
-
-4️⃣ Visualization with Power BI
-Combined historical and forecasted data for direct comparison.
-
-Displayed revenue trends, YoY growth, and forecast vs. actual using clear line and bar charts.
-
-Included KPI cards for forecast values and growth tracking.
-
-📈 Results
-MAE: ~6,400 on a ~70,000 revenue scale (~9% relative error).
-
-RMSE: ~6,600.
-
-Clear visual differentiation between historical and forecasted revenues.
-
-Month-over-month growth % tracked for actionable business insights.
-
+<h3>📈 Results</h3>
+<ul>
+<li><strong>MAE:</strong> ~6,400 on a ~70,000 revenue scale (~9% relative error)</li>
+<li><strong>RMSE:</strong> ~6,600</li>
+<li>Clear visual differentiation between <strong>historical and forecasted revenues</strong>.</li>
+<li>Tracked month-over-month growth % for <strong>actionable business insights</strong>.</li>
+</ul>
 
