@@ -21,7 +21,7 @@ st.set_page_config(
 # LOAD DATA
 # Replace with your actual file
 # ----------------------------------------------------------
-df = pd.read_excel("usa_food_forecast.xlsx")
+df = pd.read_excel("combined_forecast_output.xlsx")
 
 # Convert date column
 df["Month"] = pd.to_datetime(df["Month"])
