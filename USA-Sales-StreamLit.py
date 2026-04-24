@@ -38,8 +38,8 @@ date_range = st.sidebar.date_input(
 
 holiday_filter = st.sidebar.multiselect(
     "Day Type",
-    df["Holiday Or Not"].unique(),
-    default=df["Holiday Or Not"].unique()
+    df["Holiday_Flag"].unique(),
+    default=df["Holiday_Flag"].unique()
 )
 
 # Apply Filters
