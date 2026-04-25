@@ -1,12 +1,12 @@
 # ==========================================================
 # USA FOOD REVENUE FORECAST DASHBOARD
-# Streamlit Professional Version
+# Final Professional Streamlit Version
+# Uses ONLY: combined_forecast_output.xlsx
 # ==========================================================
 
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import plotly.graph_objects as go
 
 # ----------------------------------------------------------
 # PAGE CONFIG
@@ -20,44 +20,29 @@ st.set_page_config(
 # ----------------------------------------------------------
 # LOAD DATA
 # ----------------------------------------------------------
-df = pd.read_csv("RawMessyFileOfUSA.csv")
+df = pd.read_excel("combined_forecast_output.xlsx")
 
 # Clean column names
 df.columns = df.columns.str.strip()
 
-# Rename if needed
-if "month" in df.columns:
-    df.rename(columns={"month": "Month"}, inplace=True)
-
-# Convert Month column
+# Convert datatypes
 df["Month"] = pd.to_datetime(df["Month"], errors="coerce")
-
-# Drop blank dates
-df = df.dropna(subset=["Month"])
-
-# Revenue numeric
 df["Revenue"] = pd.to_numeric(df["Revenue"], errors="coerce")
 
+# Drop null rows
+df = df.dropna(subset=["Month", "Revenue"])
+
 # ----------------------------------------------------------
-# CREATE EXTRA COLUMNS
+# CREATE EXTRA FIELDS
 # ----------------------------------------------------------
 df["Year"] = df["Month"].dt.year
 df["Month_Name"] = df["Month"].dt.strftime("%B")
-
-# Growth %
 df["MoM Growth %"] = df["Revenue"].pct_change() * 100
 
 # ----------------------------------------------------------
-# KPIs
+# SIDEBAR FILTERS
 # ----------------------------------------------------------
-latest_revenue = df["Revenue"].iloc[-1]
-growth = df["MoM Growth %"].iloc[-1]
-rmse = 6580.20
-
-# ----------------------------------------------------------
-# SIDEBAR
-# ----------------------------------------------------------
-st.sidebar.header("Filters")
+st.sidebar.header("📌 Filters")
 
 date_range = st.sidebar.date_input(
     "Select Date Range",
@@ -80,13 +65,20 @@ if len(date_range) == 2:
 df = df[df["Holiday_Flag"].isin(holiday_filter)]
 
 # ----------------------------------------------------------
+# KPI VALUES
+# ----------------------------------------------------------
+latest_revenue = df["Revenue"].iloc[-1]
+growth = df["MoM Growth %"].iloc[-1]
+rmse = 6580.20
+
+# ----------------------------------------------------------
 # TITLE
 # ----------------------------------------------------------
 st.title("📊 USA Food Revenue Forecast Dashboard")
-st.markdown("Business Intelligence | Forecasting | Trend Analysis")
+st.markdown("### Business Intelligence | Forecasting | Trend Analysis")
 
 # ----------------------------------------------------------
-# KPI CARDS
+# KPI ROW
 # ----------------------------------------------------------
 k1, k2, k3 = st.columns(3)
 
@@ -108,6 +100,7 @@ c1, c2 = st.columns(2)
 
 # Average Monthly Revenue
 with c1:
+
     avg_month = df.groupby("Month_Name")["Revenue"].mean().reset_index()
 
     month_order = [
@@ -132,25 +125,30 @@ with c1:
     )
 
     fig1.update_traces(
-        texttemplate='%{text:.0f}',
-        marker_color="#1f77b4"
+        marker_color="#1f77b4",
+        texttemplate='%{text:.0f}'
     )
 
-    fig1.update_layout(height=350)
+    fig1.update_layout(height=380)
 
     st.plotly_chart(fig1, use_container_width=True)
 
-# Historical Revenue
+# Historical Revenue + Forecast
 with c2:
+
     fig2 = px.line(
         df,
         x="Month",
         y="Revenue",
         color="Type",
-        title="Historical Revenue & Forecast Outlook"
+        title="Historical Revenue & Forecast Outlook",
+        color_discrete_map={
+            "Actual": "gray",
+            "Forecast": "#1f77b4"
+        }
     )
 
-    fig2.update_layout(height=350)
+    fig2.update_layout(height=380)
 
     st.plotly_chart(fig2, use_container_width=True)
 
@@ -161,6 +159,7 @@ c3, c4 = st.columns(2)
 
 # Holiday Revenue
 with c3:
+
     holiday = df.groupby("Holiday_Flag")["Revenue"].sum().reset_index()
 
     fig3 = px.bar(
@@ -169,21 +168,33 @@ with c3:
         y="Holiday_Flag",
         orientation="h",
         color="Holiday_Flag",
-        title="Holiday vs Non-Holiday Revenue"
+        title="Holiday vs Non-Holiday Revenue",
+        color_discrete_map={
+            "Holiday": "#2ecc71",
+            "Not Holiday": "gray"
+        }
     )
 
-    fig3.update_layout(height=320, showlegend=False)
+    fig3.update_layout(
+        height=320,
+        showlegend=False
+    )
 
     st.plotly_chart(fig3, use_container_width=True)
 
 # Growth %
 with c4:
+
     fig4 = px.line(
         df,
         x="Month",
         y="MoM Growth %",
         color="Type",
-        title="Monthly Revenue Growth %"
+        title="Monthly Revenue Growth %",
+        color_discrete_map={
+            "Actual": "gray",
+            "Forecast": "#1f77b4"
+        }
     )
 
     fig4.update_layout(height=320)
@@ -197,8 +208,8 @@ st.markdown("### 📌 Key Insights")
 
 st.info(f"""
 • Revenue forecast for next month: {latest_revenue/1000:.2f}K  
-• Holiday periods increase revenue significantly  
-• RMSE {rmse/1000:.2f}K indicates strong model accuracy  
-• Revenue recovered strongly post-2020 dip  
-• Peak demand concentrated in Q4 months  
+• Holiday periods generate higher sales than non-holiday periods  
+• RMSE 6.58K indicates strong forecast reliability  
+• Revenue trend recovered strongly post-2020 slowdown  
+• Q4 months show stronger seasonal demand potential  
 """)
