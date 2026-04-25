@@ -204,7 +204,7 @@ with c4:
 # ----------------------------------------------------------
 # KEY INSIGHTS
 # ----------------------------------------------------------
-st.markdown("### 📌 Key Insights")
+st.markdown("### Key Insights")
 
 st.info(f"""
 • Revenue forecast for next month: {latest_revenue/1000:.2f}K  
